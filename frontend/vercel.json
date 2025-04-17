@@ -19,7 +19,7 @@
         },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://authfeedback-backend.onrender.com"
+          "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
