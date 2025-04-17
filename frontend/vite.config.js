@@ -49,4 +49,8 @@ export default defineConfig({
       },
     },
   },
+  // Add base URL for production
+  base: process.env.NODE_ENV === 'production' 
+    ? 'https://authfeedback-frontend.onrender.com/'
+    : '/',
 })
