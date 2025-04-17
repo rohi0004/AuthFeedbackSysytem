@@ -19,10 +19,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || 'https://authfeedback-backend.onrender.com',
+        target: 'https://authfeedback-backend.onrender.com',
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        ws: true,
         configure: (proxy, _options) => {
           proxy.on('error', (err, _req, _res) => {
             console.log('proxy error', err);
@@ -49,8 +49,4 @@ export default defineConfig({
       },
     },
   },
-  // Add base URL for production
-  base: process.env.NODE_ENV === 'production' 
-    ? 'https://authfeedback-frontend.onrender.com/'
-    : '/',
 })

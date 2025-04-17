@@ -98,25 +98,20 @@ const Login = () => {
       });
 
       const data = await response.json();
-      console.log('Login response:', { status: response.status, data });
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
-      if (data.payload) {
+      // Handle response status
+      if (response.status === 400 || response.status === 401 || response.status === 403) {
+        toast.error(data.message);
+      } else if (response.status === 200) {
         setUser(data.payload);
-        localStorage.setItem('user', JSON.stringify(data.payload));
         toast.success('Signed in successfully');
         showWelcomeDialog(data.payload);
       } else {
-        throw new Error('Invalid response from server');
+        toast.error(data.message);
       }
     } catch (error) {
-      console.error('Login error:', error);
-      toast.error(error.message || 'An error occurred during login');
-      setUser(null);
-      localStorage.removeItem('user');
+      console.error(error);
+      toast.error('An error occurred during login');
     } finally {
       setLoading(false);
     }
