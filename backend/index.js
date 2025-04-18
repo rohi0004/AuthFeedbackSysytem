@@ -13,13 +13,28 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
+
+// CORS configuration
+const allowedOrigins = [
+  'https://authfeedback-frontend.onrender.com',
+  'http://localhost:5173',
+  'https://auth-feedback-sysytem-qkq8.vercel.app'
+];
+
 app.use(cors({
-  origin: 'https://authfeedback-frontend.onrender.com',
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
 
 // Routes
 app.use('/api/auth', authRoutes);
