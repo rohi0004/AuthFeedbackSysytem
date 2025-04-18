@@ -22,18 +22,7 @@ export default defineConfig({
         target: 'https://authfeedback-backend.onrender.com',
         changeOrigin: true,
         secure: true,
-        ws: true,
-        configure: (proxy, _options) => {
-          proxy.on('error', (err, _req, _res) => {
-            console.log('proxy error', err);
-          });
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
-            console.log('Sending Request:', req.method, req.url);
-          });
-          proxy.on('proxyRes', (proxyRes, req, _res) => {
-            console.log('Received Response:', proxyRes.statusCode, req.url);
-          });
-        }
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
     },
   },
