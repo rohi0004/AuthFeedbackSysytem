@@ -30,17 +30,24 @@ const loginUser = async (req, res) => {
       expiresIn: '7d',
     });
 
-    // Set cookie
+    // Set cookie with appropriate options for cross-origin
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true, // Always use secure in production
+      sameSite: 'none', // Required for cross-origin cookies
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/',
+      domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
     });
 
+    // Send response
     res.status(200).json({
       message: 'Login successful',
       payload: user.username,
+      user: {
+        username: user.username,
+        email: user.email
+      }
     });
   } catch (error) {
     console.error('Login error:', error);
