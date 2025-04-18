@@ -21,8 +21,7 @@ export default defineConfig({
       '/api': {
         target: 'https://authfeedback-backend.onrender.com',
         changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        secure: true
       }
     },
   },
