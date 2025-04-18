@@ -11,21 +11,16 @@ const feedbackRoutes = require('./routes/feedbackRoutes');
 const app = express();
 
 // Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+  origin: 'https://authfeedback-frontend.onrender.com',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-const allowedOrigins = [
-  'https://auth-feedback-sysytem-qkq8.vercel.app',
-  'http://localhost:5173',
-]
 
-app.use(
-  cors({
-    credentials: true,
-    origin: allowedOrigins,
-  })
-)
-
-app.use(express.json())
-app.use(cookieParser())
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/feedback', feedbackRoutes);
