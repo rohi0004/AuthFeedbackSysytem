@@ -16,25 +16,4 @@ export default defineConfig({
       plugins: [tailwindcss],
     },
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://authfeedback-backend.onrender.com',
-        changeOrigin: true,
-        secure: true
-      }
-    },
-  },
-  build: {
-    outDir: 'dist',
-    sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['@chakra-ui/icons', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
-        },
-      },
-    },
-  },
 })
