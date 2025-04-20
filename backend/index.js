@@ -9,26 +9,31 @@ const authRoutes = require('./routes/authRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 
 const app = express();
+const port = process.env.PORT || 5000; // Default to 5000 if the PORT env variable is not set
 
-// Middleware
+// CORS configuration
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://authfeedback-frontend.onrender.com'
+];
+
+// Middleware setup
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://authfeedback-frontend.onrender.com'
-  ],
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Routes
+// Routes setup
 app.use('/api/auth', authRoutes);
 app.use('/api/feedback', feedbackRoutes);
 
-// Connect to MongoDB
-mongoose.connect(process.env.URI)
+// MongoDB connection
+const uri = process.env.URI;
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
@@ -38,8 +43,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
